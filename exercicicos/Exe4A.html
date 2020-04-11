@@ -37,7 +37,10 @@
 
             voa() {
                 // hum..precisamos implementar esse método também!
-                this._aviao.voa();
+               // isso 
+                //this._aviao.voa();
+                //ou
+                Reflect.apply(Aviao.prototype.voa, this,[]);
             }
         }
 
