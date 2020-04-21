@@ -42,8 +42,22 @@ class  NegociacaoController{
         importaNegociacoes(){
        
             let service = new NegociacaoService();
+
+            Promise.all([
+                    service.obterNegociacoesDaSemana(),
+                    service.obterNegociacoesDaSemanaAnterior(),
+                    service.obterNegociacoesDaSemanaRetrasada()]
+                       ).then(negociacoes => {
+                           negociacoes
+                           .reduce((arrayAchatado,array) => arrayAchatado.concat(array),[])
+                           .forEach(negociacao => this._listaNegociacoes.adiciona(negociacao));
+                              this._mensagem.texto = 'Negociacoes importadas com sucesso';                    
+                       })
+                       .catch(erro => this._mensagem.texto = erro);
+
+            
           
-             service.obterNegociacoesDaSemana()
+           /*  service.obterNegociacoesDaSemana()
                 .then(negociacoes => {
                     negociacoes.forEach(negociacao => this._listaNegociacoes.adiciona(negociacao))
                     this._mensagem.texto = 'Negociação da semana obtida com sucesso';          
@@ -62,7 +76,7 @@ class  NegociacaoController{
                     negociacoes.forEach(negociacao => this._listaNegociacoes.adiciona(negociacao))
                     this._mensagem.texto = 'Negociação da semana obtida com sucesso';          
                     })
-                    .catch(erro => this.mensagem.texto = erro);       
+                    .catch(erro => this.mensagem.texto = erro);   */    
      }
 
     _limpaFormulario()
